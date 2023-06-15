@@ -1,0 +1,69 @@
+=> MVC Framework (Model,View,Controller)
+
+=Model 
+it's work with database (Select,Insert,Update,Delete)
+communicate with the controller (when )
+
+=View 
+A view is that part of the application that represents the presentation of data HTML CSS codes for 
+
+=Controller
+the controller receives input from the user, process the request(GET,POST,PUT,DELETE)
+
+-------------------------------
+
+Version Needed 
+
+php 8.1>
+composer 2.4 
+
+php -view
+php --version 
+
+composer 
+
+--------------------------------
+
+
+=>Installation 
+
+Method 1 
+composer create-project laravel/laravel projectname 
+Method 2 
+composer global require laravel/installer 
+laravel new projectname 
+
+
+----------------------------------
+
+=>Folder and File Structure
+
+app > Http > Controller 
+app > Http > Models 
+app > database > migrations 
+app > public ( for public custom css / custom js )
+resources > views 
+routes > web.php (or) routes > api.php 
+.env 
+
+---------------------------------
+=>Run Projects 
+php artisan serve
+
+=>Stop Project (503 error)
+php artisan down 
+
+=>Stop Project (by redirect)
+php artisan down --redirect=/https://google.com
+
+=>Resume Project 
+php artisan up 
+
+php 8
+com 2.5.5 
+x on 
+down 
+
+----------------------------------
+
+company.com php artisan down 503

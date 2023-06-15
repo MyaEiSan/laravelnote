@@ -1,0 +1,81 @@
+=>Route 
+
+routes > web.php (or) routes > api.php 
+
+
+=>Available Route Methods 
+Route::get(uri,callback);
+Route::post(uri,callback);
+Route::put(uri,callback);
+Route::patch(uri,callback);
+Route::delete(uri,callback);
+Route::options(uri,callback);
+
+
+=>Basic Routing 
+
+Route::get("/",function(){
+	return view("filename");
+});
+
+Route::get("sayhi",function(){
+    return "Hi Min Ga Lar Par";
+});
+
+Route::get("about",function(){
+	return "Hi Min Ga Lar Par";
+});
+
+(or)
+
+Route::view("about","aboutme");
+
+-----------------------------------
+
+=>Redirect Routing
+
+Syntax 
+Route::get(url,function(){
+	return redirect(routename);
+});
+
+Route::get('contact',function(){
+	return redirect('about');
+});
+
+(or) 
+
+=>Syntax
+Route::view(uri,routename);
+
+Route::redirect('contact','about/company');
+
+------------------------------------
+
+21RT
+
+=>Route with Parameter 
+
+=Single Parameter 
+
+Route::get('about/company/{staff}',function($staff){
+	return view('aboutcompanystaff',['sf'=>$staff]);
+});
+
+
+=Multi Parameter
+
+Route::get('about/company/{staff}/{city}',function($staff,$city){
+	return view('aboutcompanystaffbycity',['sf'=>$staff,'ct'=>$city"]);
+});
+
+
+=Naming Route 
+
+Route::get('profile',function(){
+    return view('profileme');
+})->name('profiles');
+
+
+-----------------------------------
+
