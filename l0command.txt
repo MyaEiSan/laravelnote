@@ -19,3 +19,10 @@ php artisan route:list --path=student
 php artisan route:list --method=get
 php artisan route:list --method=get -r
 php artisan route:list --method=post 
+
+
+
+=>Migration 
+
+=>tables to update db server 
+php artisan migrate 

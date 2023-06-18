@@ -1,0 +1,47 @@
+=>Public Data Passing
+
+App > Providers > AppServiceProvider.php 
+
+boot function ထဲမှာရေးရမှာ 
+
+Method 1
+
+view()->composer('*',function($view){
+	$getyear = date('Y');
+
+	$view->with('getyear',$getyear);
+
+});
+
+
+(or)
+
+
+Method 2 
+use Illuminate\Support\Facades\View;
+
+ // =>Single
+View::composer('employees.index',function($view){
+    $thanks = "Thank you for shopping with us.";
+    $view->with('thanks',$thanks);
+});
+
+
+ကိုပေးချင်တဲ့ view က တစ်ခု မဟုတ်ဘဲ  Multiple ကိုမှ ရွေးပေးချင်ရင် composer ရဲ့ first parameter မှာ [] နဲ့ ပေးရမယ် 
+
+// =>Multi
+View::composer(['layouts.index','members.index'],function($view){
+    $services = "Thank you for using our service.";
+    $view->with('services',$services);
+});
+
+
+(or)
+
+Method 3
+
+View::share('demo','Do you want our demo version.');
+
+demo က ခေါ်သုံးမည့် variable name  
+
+သူက တော့ view  တိုင်းမှာ ခေါ် သုံးလို့ ရနေမှာ 
