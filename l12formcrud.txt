@@ -1,0 +1,46 @@
+=> Form CRUD 
+
+=Migration 
+
+php artisan make:model Country -m 
+
+$table->string('name');
+$table->string('capital');
+$table->string('currency');
+$table->text('content');
+$table->integer('user_id')->unsigned();
+
+php artisan migrate:status 
+php artisan migrate 
+
+=In Model (Country.php)
+
+protected $table = "countries";
+protected $primaryKey = "id";
+protected $fillable = [
+    'name',
+    'capital',
+    'currency',
+    'content',
+    'user_id'
+];
+
+=In Model (User.php)
+
+public function countries(){
+    return $this->hasMany(Country::class);
+}
+
+=In CMD 
+
+php artisan make:controller CountriesController --resource
+(or)
+php artisan make:controller CountriesController --r
+
+php artisan route:list 
+php artisan route:list --path=countries
+
+
+=In Web 
+
+Route::resource('/countries',CountriesController::class);

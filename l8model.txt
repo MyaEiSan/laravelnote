@@ -1,0 +1,174 @@
+=>Model 
+=>Database Eloquent ORM (Object-Relational Mapper)
+
+=>Generate Model Class ( Model typically live in the app\Models directory and extends Illuminate\Database\Eloquent\Model class. )
+=Command Line ( Just Model )
+php artisan make:model Post 
+
+=Command Line ( Model + Migration )
+php artisan make:model Article --migration 
+or 
+php artisan make:model Article -m 
+
+
+
+-----------------
+
+=>Inspecting Models to Database Table 
+php artisan model:show Article
+
+-----------------
+
+
+=>Useful Keyword in Model 
+
+=Table Name 
+protected $table = 'articles';
+
+=Customize Timestamp 
+const CREATED_AT = 'created_date';
+const UPDATED_AT = 'updated_date';
+
+=Primary Keys 
+protected $primaryKey = 'id';
+
+Note:: အဲလို သတ်မှတ်ထားရင် query ကို find နဲ့ ထုတ်တဲ့အခါ ပေးတဲ့ number က id  column ထဲက နေ လိုက်ရှာမှာ။ protected $primaryKey = 'user_id'; လို့ ရေးရင် user_id ထဲက ကိုက်ညီတဲ့ record ထဲက ပထမဦးဆုံး record ကို ရမှာ။
+
+php artisan migrate:status 
+php artisan migrate 
+
+php artisan model:show Article 
+
+-----------
+
+
+=>Retrieving Datas By Model (Single / Multi)
+
+ $articles = Article::all();
+ return $articles;
+
+
+$articles = Article::all();
+ return "$articles";
+
+
+
+foreach($articles as $article){
+    echo "$article->title <br/>  $aarticle->description <hr/>";
+}
+
+=>Retrieve a data by primary key from model 
+
+$articles = Article::find(5);
+return $articles;
+
+=Not Found Exception 
+$article = Article::findOrFail(20);
+return $article; //404 NOT FOUND 
+
+
+=>Retrieving Data matching 
+ $article =  Article::where('user_id',2)->get();
+return $article;
+
+//=>asc/desc
+$article =  Article::where('user_id',1)->orderBy('id','desc')->get();
+$article =  Article::where('user_id',1)->orderByDesc('id')->get();
+return $article;
+
+
+
+
+
+
+insert data articls table from xampp 
+
+This is article 1 
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+
+1 
+
+2 
+
+This is article 2 
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+
+1 
+
+2 
+
+
+This is article 3 
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+
+1 
+
+2 
+
+
+This is article 4
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+
+1 
+
+2 
+
+
+This is article 5
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+
+1 
+
+2 
+
+
+This is article 6 
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+
+1 
+
+2 
+
+This is article 7 
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+
+1 
+
+2 
+
+This is article 8
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+
+1 
+
+2 
+
+This is article 9
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+
+1 
+
+2 
+
+
+This is article 10
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+
+1 
+
+2 
+
+
+
+
+

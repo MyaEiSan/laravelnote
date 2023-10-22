@@ -1,0 +1,67 @@
+=> Date Format 
+
+Route::get('/dates/', function(){
+	echo Carbon::now(); //2023-10-07 20:41:39
+    echo "<br/>";
+
+    echo Carbon::now()->addDays(10); //2023-10-17 20:42:41
+    echo "<br/>";
+
+    echo Carbon::now()->diffForHumans();
+    echo "<br/>"; // 1 second ago
+
+    echo Carbon::now()->addDays(1)->diffForHumans(); //23 hours from now
+    echo "<br/>"; 
+
+    echo Carbon::now()->addDays(3)->diffForHumans(); //2 days from now
+    echo "<br/>";
+
+    echo Carbon::now()->addDays(10)->diffForHumans(); //1 week from now
+    echo "<br/>";
+
+    echo Carbon::now()->subDays(1);//2023-10-06 20:49:57
+    echo "<br/>";
+
+    echo Carbon::now()->subDays(1)->diffForHumans(); //1 day ago
+    echo "<br/>";
+
+    echo Carbon::now()->subDays(3)->diffForHumans(); //3 days ago
+    echo "<br/>";
+
+
+    echo Carbon::now()->subDays(10)->diffForHumans(); // 1 week ago
+    echo "<br/>";
+
+    echo "<hr/>";
+    
+    echo Carbon::now()->addMonths(1);//2023-11-07 20:56:27
+    echo "<br/>";
+
+    echo Carbon::now()->addMonths(1)->diffForHumans(); //4 weeks from now
+    echo "<br/>";
+
+    echo Carbon::now()->addMonths(3)->diffForHumans();//2 months from now
+    echo "<br/>";
+
+    echo Carbon::now()->addMonths(10)->diffForHumans(); //9 months from now
+    
+    echo "<br/>";
+
+    echo Carbon::now()->subMonths(1);//2023-09-07 20:56:27
+    echo "<br/>";
+
+    echo Carbon::now()->subMonths(1)->diffForHumans(); //  1 month ago
+    echo "<br/>";
+
+    echo Carbon::now()->subMonths(3)->diffForHumans(); // 3 months ago
+    echo "<br/>";
+
+    echo Carbon::now()->subMonths(10)->diffForHumans(); // 10 months ago
+    echo "<br/>";
+
+    echo Carbon::now()->yesterday()->diffForHumans(); // 1 day ago
+    echo "<br/>";
+
+    echo Carbon::now()->tomorrow()->diffForHumans(); //2 hours from now
+    echo "<br/>";
+});

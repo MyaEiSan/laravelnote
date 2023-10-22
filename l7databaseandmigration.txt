@@ -27,6 +27,7 @@ php artisan migrate
 
 =>Create New Table 
 php artisan make:migration create_students_table 
+php artisan make:migration create_workers_table --create="workers"
 
 Schema::create('students', function (Blueprint $table) {
             $table->id();
@@ -44,6 +45,8 @@ $table->bigIncrements('id'); voucher id လိုမျိုးတွေမှ�
 $table->increments('id');
 $table->bigInteger('id');
 $table->unsignedInteger('id');
+$table->unsignedBigInteger('id');
+$table->tinyInteger('status');
 $table->smallInteger('votes');
 $table->binary('photo');
 $table->boolean('confirmed');
@@ -57,10 +60,272 @@ $table->time('bookingtime');
 $table->date('created_at');
 $table->year('birthyear');
 $table->timestamps();
+$table->timestamp();
 $table->decimal('amount',precision=8,scale=2);
 $table->float('measure',precision-8,scale=2);
 $table->enum('payment',['visa','mpu','cod','kpay','wave']);
 $table->json('multiphones');
 
 
-17DT
+=>List all files from database > migrations files 
+php artisan migrate:status
+
+=>Undo migration
+php artisan migrate:rollback 
+
+=>Check Migration Status 
+php artisan migrate:status 
+
+
+
+php artisan make:migration create_staffs_table --create="staffs"
+php artisan make:migration create_employees_table --create="employees"
+
+=>Undo migration by step (selected table count to local)
+php artisan migrate:rollback --step=2
+
+=>Check before rollback table list 
+php artisan migrate:rollback --pretend
+
+=>Delete all tables (auto rollback)
+php artisan migrate:reset
+
+php artisan make:migration create_shoppers_table --create="shoppers"
+
+=>Delete all datas (auto rollback and auto migrate)
+php artisan migrate:refresh 
+
+
+=>Delete all datas (auto rollback and auto migrate / selected table count to local by DESC)
+php artisan migrate:refresh --step=2
+
+
+=>Add New Columns 
+php artisan make:migration add_city_to_shoppers_table --table=shoppers
+$table->string('city'); to add_city_to_shoppers_table 
+php artisan migrate 
+
+=>Sort Column 
+php artisan migrate:rollback --pretend 
+php artisan migrate:rollback 
+$table->string('city')->after('phonenumber'); to add_city_to_shoppers_table 
+
+php artisan make:migration add_city_to_employees_table --table=employees
+$table->string('city')->after('phonenumber');
+
+
+php artisan make:migration add_city_to_staffs_table --table=staffs
+$table->string('city')->after('phonenumber'); 
+
+=>down
+$table->dropColumn('city');
+
+php artisan migrate 
+php artisan migrate:status
+php artisan migrate:rollback --pretend
+php artisan migrate:rollback
+php artisan migrate 
+
+=>Drop Columns 
+php artisan make:migration remove_id_to_students_table --table=students
+->up
+$table->dropColumn('id');
+php artisan migrate
+php artisan migrate:status
+php artisan migrate:rollback --pretend
+php artisan migrate:rollback
+php artisan migrate 
+
+
+php artisan make:migration remove_id_to_workers_table --table=workers
+=>up
+$table->dropColumns(['id','phonenumber']);
+=>down
+$table->id();
+$table->string('phonenumber')->after('fullname');
+php artisan migrate
+php artisan migrate:status
+php artisan migrate:rollback --pretend
+php artisan migrate:rollback
+php artisan migrate 
+
+
+php artisan make:migration remove_id_to_staffs_table --table=staffs
+=>up
+
+	Note::hasColumn(table,columnname)
+
+if(Schema::hasColumn('staffs','id')){
+	Schema::table('staffs',function(Blueprint $table){
+	$table->id();
+	});
+}
+
+
+php artisan migrate
+php artisan migrate:status
+php artisan migrate:rollback --pretend
+php artisan migrate:rollback
+php artisan migrate 
+
+php artisan migrate:rollback --pretend
+php artisan migrate:rollback
+
+=>down 
+$talbe->id()->first();
+
+php artisan migrate 
+php artisan migrate:rollback --pretend
+php artisan migrate:rollback
+
+
+=>Rename Columns  renameColumn(from,to)
+php artisan make:migration rename_students_column --table=students
+=>up
+$table->renameColumn('phonenumber','phone');
+$table->renameColumn('address','city');
+=>down
+$table->renameColumn('phone','phonenumber');
+$table->renameColumn('city','address');
+
+php artisan migrate
+php artisan migrate:status
+php artisan migrate:rollback --pretend 
+php artisan migrate:rollback 
+php artisan migrate
+
+
+
+=>Rename Table rename(from,to)
+php artisan make:migration rename_employees_to_customers_table --table=employees
+=>up
+Schema::rename('employees','customers');
+=>down
+Schema::rename('customers','employees')
+
+
+php artisan migrate
+php artisan migrate:status
+php artisan migrate:rollback --pretend 
+php artisan migrate:rollback 
+php artisan migrate
+
+
+=>Default value
+php artisan make:migration create_books_table --table="books"
+
+ Schema::create('books', function (Blueprint $table) {
+	$table->increments('id');
+	$table->string('title');
+	$table->tinyInteger('status')->default('1');
+	$table->enum('copyright',['0','1'])->default('0');
+	$table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP')); // timestamp not include s
+	$table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+});
+
+
+php artisan make:migration create_profiles_table --table="profiles"
+
+ Schema::create('profiles', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('givenname',100);
+            $table->string('familyname',100);
+            $table->enum('gender',array('male','female','unisex'))->default('female');
+            $table->text('bio');
+            $table->unsignedBigInteger('user_id');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
+        });
+
+
+
+=>Creating Indexes 
+
+$table->string('email')->unique();
+
+php artisan make:migration create_authors_table --create="authors"
+php artisan make:migration create_types_table --create="types"
+php artisan make:migration create_posts_table --create="posts"
+
+
+
+=>Foreign Key Constraints 
+
+Method 1
+$table->unsignedBigInteger('user_id');
+$table->foreign('user_id')->references('id')->on('users');
+
+Method 2 
+$table->foreignId('user_id')->constrained('users');
+
+
+
+Schema::create('authors', function (Blueprint $table) {
+            $table->id();
+            $table->stirng('name');
+            $table->timestamps();
+        });
+
+
+Schema::create('types', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
+        });
+
+
+
+Schema::create('posts', function (Blueprint $table) {
+            $table->id();
+            $table->string('title')->unique();
+            $table->text('description');
+
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+
+            $table->foreignId('author_id')->constrained('authors')->onUpdate('cascade')->onDelete('cascade');
+
+            $table->year('year');
+
+            $table->unsignedBigInteger('type_id');
+            $table->foreign('type_id')->references('id')->on('types')->onUpdate('cascade')->onDelete('cascade');
+
+
+            $table->timestamps();
+        });
+
+
+//=>Data Insert From Route 
+//use Illuminate\Support\Facades\DB;
+Route::get('types/insert',function(){
+    DB::insert("INSERT INTO types(name) value(?)",["pdf"]);
+    return "Successfully Inserted";
+});
+
+// Route::get('types/read',function(){
+//     $results = DB::select("SELECT * FROM types");
+    
+//     return $results;
+// });
+
+// Route::get('types/read',function(){
+//     $results = DB::select("SELECT * FROM types");
+    
+//     return var_dump($results);
+// });
+
+
+// Route::get('types/read',function(){
+//     $results = DB::select("SELECT * FROM types");
+    
+//     foreach($results as $type){
+//         echo $type->name . "<br/>";
+//     }
+// });
+
+
+Route::get('types/read',function(){
+    $result = DB::select("SELECT * FROM types WHERE id=?",[3]);
+    
+    return $result;
+});

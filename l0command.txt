@@ -26,3 +26,77 @@ php artisan route:list --method=post
 
 =>tables to update db server 
 php artisan migrate 
+
+
+=>Create New Table 
+php artisan make:migration create_students_table 
+
+
+=>Undo migration 
+php artisan migrate:rollback 
+
+=>Check Migration Status 
+php artisan migrate:status 
+
+
+=>Undo migration by step (selected table count to local)
+php artisan migrate:rollback --step=2
+
+=>Check before rollback table list 
+php artisan migrate:rollback --pretend
+
+=>Delete all tables 
+php artisan migrate:reset
+
+
+=>Delete all datas (auto rollback and auto migrate)
+php artisan migrate:refresh 
+
+=>Delete all datas (auto rollback and auto migrate /selected table count to local by DESC)
+php artisan migrate:refresh --step=2
+
+
+=>Add New Columns 
+php artisan make:migration add_city_to_shoppers_table --table=shoppers
+
+
+=>Sort Column  
+$table->string('city')->after('phonenumber'); to add_city_to_shoppers_table 
+
+
+=>Rename Table rename(from, to)
+php artisan make:migration rename_employees_to_customers_table --table=employees 
+=>up 
+Schema::rename('employees', 'customers');
+=>down
+Schema::rename('customers', 'employees');
+
+=>CRUD 
+DB::select 
+DB::insert 
+DB::update 
+DB::delete 
+
+DB::table()->get()
+$results = DB::table()->select()->get();
+$results = DB::table()->selectRaw()->get();
+
+
+----------
+
+
+=>Change Laravel Timezone 
+
+app > 'timezone' => 'Asia/Yangon',
+
+Note:: php artisan config:clear 
+
+
+// => 2. Storage Folder/ Local Driver (storage/app/customfolder)
+
+// php artisan storage:link 
+
+// $request->image->store('path');
+
+// use Illuminate\Support\Facades\Storage
+// Storage::disk('local').put($file,'content','optional');

@@ -22,3 +22,15 @@ Route::name('students.')->group(function(){
 
 php artisan make:controller staffsController
 
+
+
+-------------------------
+
+=> Resource Controller 
+
+php artisan make:controller CountriesController --resource
+(or)
+php artisan make:controller CountriesController --r
+
+php artisan route:list 
+php artisan route:list --path=countries

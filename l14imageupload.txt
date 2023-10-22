@@ -1,0 +1,35 @@
+=> Image Upload 
+
+=>Single Upload 
+
+php artisan make:model Product -m 
+
+$table->string('name');
+$table->decimal('price',9,2);
+$table->string('image');
+
+php artisan migrate:status 
+php artisan migrate 
+
+=In Model (Product.php)
+
+protected $table = "products";
+protected $primaryKey = "id";
+protected $fillable = [
+    'name',
+    'price',
+    'image'
+];
+
+=In CMD 
+
+php artisan make:controller ProductsController --resource 
+(or)
+php artisan make:controller ProductsController -r
+
+
+=In Web 
+
+Route::resource('products',ProductsController::class);
+
+php artisan route:list
