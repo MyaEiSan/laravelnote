@@ -9,7 +9,7 @@ A view is that part of the application that represents the presentation of data 
 
 =Controller
 the controller receives input from the user, process the request(GET,POST,PUT,DELETE)
-
+The controller mediates between the models an dviews.
 -------------------------------
 
 Version Needed 

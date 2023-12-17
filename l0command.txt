@@ -100,3 +100,19 @@ Note:: php artisan config:clear
 
 // use Illuminate\Support\Facades\Storage
 // Storage::disk('local').put($file,'content','optional');
+
+
+-------------
+
+=>After Login or Register (Redirect)
+
+App > Providers > RouteServiceProvider > public const HOME = '/dashboards';
+
+
+----------
+=>Check Route 
+
+php artisan route:clear 
+php artisan route:cache 
+
+---------------
