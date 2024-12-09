@@ -59,9 +59,75 @@ Route::get('/dates/', function(){
     echo Carbon::now()->subMonths(10)->diffForHumans(); // 10 months ago
     echo "<br/>";
 
+    echo Carbon::now()->addWeek(); 
+    echo Carbon::now()->addWeeks(4);
+
+    echo Carbon::now()->subWeek(); 
+    echo Carbon::now()->subWeeks(4);
+
+    echo Carbon::now()->addQuarter(); 
+    echo Carbon::now()->addQuarter(3); 
+
+    echo Carbon::now()->subQuarter(); 
+    echo Carbon::now()->subQuarter(3); 
+
+    echo Carbon::now()->addYear(); 
+    echo Carbon::now()->addYears(3); 
+
+    echo Carbon::now()->subYear(); 
+    echo Carbon::now()->subYears(3); 
+
+
+    echo Carbon::now()->addHour();
+    echo Carbon::now()->addHours(2);
+
+    echo Carbon::now()->subHour();
+    echo Carbon::now()->subHours(2);
+
+    echo Carbon::now()->addMinute();
+    echo Carbon::now()->addMinutes(2);
+
+    echo Carbon::now()->subMinute();
+    echo Carbon::now()->subMinutes(2);
+
+    echo Carbon::now()->addSecond();
+    echo Carbon::now()->addSeconds(2);
+
+    echo Carbon::now()->subSecond();
+    echo Carbon::now()->subSeconds(2);
+
+
+
+
     echo Carbon::now()->yesterday()->diffForHumans(); // 1 day ago
     echo "<br/>";
 
     echo Carbon::now()->tomorrow()->diffForHumans(); //2 hours from now
     echo "<br/>";
+
+    ->everySecond();
+    ->everyMinute(); 
+    ->everyTwoMinutes();
+    ->everyThreeMinutes(); 
+    ->everyFourMinutes();
+    ->everyFiveMinutes();
+    ->everyTenMinutes(); 
+    ->everyThirtyMinutes(); 
+    ->hourly(); 
+    ->hourlyAt(17); Run the task every hour at 17 minutes past the hour 
+
+    ->daily();
+    ->daily('13:00'); 
+
+
+    ->weekly();
+    ->weeklyOn(1,'8:00'); Run the task every week on Monday at 8 am 
+
+    ->montly();
+    ->monthlyOn(4,'15:00'); Run the task every month on 4th at 3pm 
+     
+    
+
+
+
 });

@@ -1,0 +1,72 @@
+=>Bootstrap Install in Laravel 
+
+npm install bootstrap 
+npm install @popperjs/core        or npm install bootstrap @popperjs/core
+
+- - - - - - - - - - - - - - - - - - - - - - - - -
+
+=> resources/css/app.js 
+
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../css/app.css';
+
+import Alpine from 'alpinejs';
+
+window.Alpine = Alpine;
+
+Alpine.start();
+
+- - - - - - - - - - - - - - - - - - - - - - - - -
+
+=> resources/css/app.css 
+
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* if you use bootstrap! tailwind must disabled  */
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - -
+
+=>vite.config.js 
+
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: [
+                'resources/css/app.css',
+                'resources/js/app.js',
+            ],
+            refresh: true,
+        }),
+    ],
+});
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - -
+
+header.blade.php 
+
+@vite(['resources/css/app.css','resources/js/app.js'])
+
+<div id="app">
+ all executed codes must be here...
+</div>
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - -
+
+npm run dev 
+
+npm run build 
+
+- - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - -
+
+

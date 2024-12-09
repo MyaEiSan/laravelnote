@@ -1,0 +1,79 @@
+=>Custom css and vite to vite 
+
+=>vite.config.js 
+
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: [
+                'resources/css/app.css',
+                'resources/js/app.js',
+                'public/assets/dist/css/style.css', // Add your custom css file 
+                'public/assets/dist/js/app.js', // Add your custom js file 
+            ],
+            refresh: true,
+        }),
+    ],
+});
+
+Note:: vite ထဲမှာ ရှိတဲ့ file တွေကို @vite နဲ့ ကိုလိုအပ်သလို ချိတ်လို့ရမယ်။ 
+
+
+
+=> resources/app.js 
+
+import 'bootstrap'; // Bootstrap JS 
+import 'bootstrap/dist/css/bootstrap.min.css'; // Bootstrap CSS 
+import '../css/app.css';                       // Main CSS 
+import '../../public/assets/dist/css/style.css'; // Custom CSS 
+
+import Alpine from 'alpinejs';
+
+window.Alpine = Alpine;
+
+Alpine.start();
+
+Note::အခုလို resources/app.js file ထဲမှာ ကိုယ်လိုအပ်သလို bootstrap အတွက်လိုအပ်တဲ့ file တွေ , custom file တွေကို လိုအပ်သလို import လုပ်ပြီး အဲဒီ resources/app.js တစ်ခုတည်းကိုပဲ @vite နဲ့ ချိတ်ထားမယ်ဆိုရင်လည်း resources/app.js file ထဲမှာ import လုပ်ထားတာတွေက အလုပ်လုပ်နေမှာပါ တစ်ခုချင်းစီကို vite config  ထဲမှာထည့်ထားပေမယ့် တကယ့် blade ထဲမှာ resources/app.js file တစ်ခုကိုပဲ @vite နဲ့ချိတ်လိုက်ရင် ရပါပြီ 
+
+@vite နဲ့ ချိတ်ချင်ရင်တော့ အဲ့ file ကို vite.config.js ထဲမှာ ရှိနေမှရမှာ အဲ့ file က 
+
+
+
+Note:: custom js file ကို resources/app.js  ထဲမှာပဲ import လုပ်ပြီး ချိတ်မယ်ဆိုရင် @vite နဲ့ အဲဒီ resources/app.js  file ကို header ထဲမှာ  jQuery မချိတ်ခင် ဖြစ်လို့  ရေးထားတဲ့ jQuery code တွေအလုပ်မလုပ်တာလည်း ဖြစ်တတ်ပါတယ်။ 
+
+- - - - - - - - - - - - - - - - - - - - - - - - -
+
+=> resources/app.css  
+
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* if you use bootstrap! tailwind must disabled  */
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+- - - - - - - - - - - - - - - - - - - - - - - - -
+
+header.blade.php 
+
+Note::for custom css and bootstrap  files 
+@vite(['resources/css/app.css','resources/js/app.js'])
+
+- - - - - - - - - - - - - - - - - - - - - - - - -
+
+footer.blade.php 
+
+Note:: for custom js 
+@vite(['public/assets/dist/js/app.js'])
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - -
+
+npm run dev  // for react project 
+
+npm run build  // run this command when make changes in vite config related files 
+
+- - - - - - - - - - - - - - - - - - - - - - - - -
