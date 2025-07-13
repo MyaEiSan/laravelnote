@@ -1,0 +1,104 @@
+=>Laravel 10 install passport 
+
+=> Install 
+composer require laravel/passport
+php artisan migrate
+
+php artisan passport:install
+    Would you like to run all pending database migrations? (yes/no) [yes]: yes 
+
+    Would you like to create the "personal access" and "password grant" clients? (yes/no) [yes]: yes
+
+    Note : (php artisan passport:install will generate oauth-private.key and oauth-public.key, those 2 files are located at storage folder)
+
+=> ModifyUser modal namespace  App\Models\User 
+
+    use Laravel\Passport\HasApiTokens;
+
+    class User extends Authenticatable implements MustVerifyEmail
+    {
+        use HasApiTokens, HasFactory, Notifiable;
+
+=>Configure Guard in config/auth.php 
+
+'guards' => [
+    'web' => [
+        'driver' => 'session',
+        'provider' => 'users',
+    ],
+ 
+    'api' => [
+        'driver' => 'passport',
+        'provider' => 'users',
+    ],
+],
+
+=> Check Provider in config/auth.php 
+
+    'providers' => [
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
+
+        // 'users' => [
+        //     'driver' => 'database',
+        //     'table' => 'users',
+        // ],
+    ],
+
+=> Regenerate oauth-private.key and oauth-public.key (Optional)
+php artisan passport:keys 
+
+==> Manual Setting Config ( Very Important Stage ) <===
+
+mkdir -p secrets/oauth 
+
+mv storage/oauth-private.key secrets/oauth/private.key 
+mv storage/oauth-public.key secrets/oauth/public.key 
+
+ls -l secrets/oauth 
+cat secrets/oauth/private.key 
+cat secrets/oauth/public.key 
+
+sudo chmod 777 secrets/oauth/private.key 
+sudo chmod 777 secrets/oauth/public.key 
+
+ls -l secrets/oauth 
+
+
+=> Config App\Providers\AuthServiceProvider 
+
+ public function boot(): void
+{
+    $this->registerPolicies();
+
+    // Load keys from custom directory 
+    Passport::loadKeysFrom(base_path('secrets/oauth'));
+
+    // Debugging Tips 
+
+    if(!file_exists(base_path('secrets/oauth/private.key')) || !file_exists(base_path('secrets/oauth/public.key'))){
+        \Log::error("oauth keys are missing");
+    }else{
+        \Log::error("oauth keys are exists");
+    }
+}
+
+
+
+=> config .env file 
+
+PASSPORT_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----
+<private key here>
+-----END RSA PRIVATE KEY-----"
+ 
+PASSPORT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----
+<public key here>
+-----END PUBLIC KEY-----"
+
+
+=>Public Passport Configuration 
+
+php artisan vendor:publish --tag=passport-config
+php artisan vendor:publish --tag=passport-migrations

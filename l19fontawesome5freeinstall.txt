@@ -1,0 +1,10 @@
+=>Fontawesome 5 free Install in Laravel 
+
+=>Install via npm 
+npm install @fortawesome/fontawesome-free
+
+=>import SCSS link to resources > css > app.css 
+@import  '@fortawesome/fontawesome-free/css/all.min.css' 
+
+=>Compile Assets 
+npm run build

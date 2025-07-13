@@ -1,0 +1,730 @@
+=> Web Server 
+
+https://www.digitalocean.com/
+
+digital ocean > New Project 
+Name your project : Laravel Batch 1 
+Add a description : Student Management CRM 
+Tell us what it's for : Web Application 
+
+Click "Create Project"
+
+skip for now 
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+=> Create Server 
+
+Create  Droplets 
+Choose Region : Singapore 
+
+Choose an image : Ubuntu 
+Version : 24.10 x 64 
+
+Choose Size 
+    Regular 
+    12/Month 
+
+Choose Authentication Method 
+    Password : helloKoKo2025BBC@#$SERVER 
+
+click "Create Droplet" 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+=> Access to Server 
+
+ssh root@152.42.213.20 
+helloKoKo2025BBC@#$SERVER
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+=> Step 1 : Update Your System 
+
+    sudo apt-get update 
+    sudo apt-get upgrade -y 
+    reboot   (Optional, as you like)
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+=> Step 2 : Install Apache 
+
+    sudo apt install apache2 
+
+    Question : Do you want to continue? y 
+
+        Config : /etc/apache2/apache2.conf   The main configuration file is located 
+
+        sudo a2enmod rewrite           to enable URL rewriting, you can enable the mode rewrite module 
+
+        sudo systemctl restart apache2
+
+    Note :  sudo systemctl status apache2  
+            sudo systemctl enable apache2 
+            sudo systemctl restart apache2 
+
+    - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            
+=> Step 3 : Install MySQL ( Optional )
+
+    sudo apt install mysql-server 
+
+    Question : y 
+
+        sudo mysql_secure_installation 
+    
+    Question : Do you want to continue? y
+
+        sudo mysql_secure_installation
+
+    Question : Press y|Y for Yes, any other key for No: n
+    Remove anonymous users? (Press y|Y for Yes, any other key for No) : y
+    Disallow root login remotely? (Press y|Y for Yes, any other key for No) : n
+    Remove test database and access to it? (Press y|Y for Yes, any other key for No) : y
+    Reload privilege tables now? (Press y|Y for Yes, any other key for No) :y
+
+
+    
+    Note : sudo systemctl status mysql   Check MySQL status  
+            sudo systemctl start mysql 
+
+    Note : mysql --version        Check version without login 
+            sudo mysql or sudo mysql -u root or sudo mysql -u root -p 
+            SELECT version()      Check version with login 
+            exit   or \q 
+
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+=> Step 4 : Install PHP 
+
+    sudo apt install software-properties-common 
+    sudo apt install php              php -v or php --version 
+
+Question : Do you want to continue? y 
+
+    sudo nano /var/www/html/info.php  create info.php file to test php 
+
+
+
+    <?php 
+
+        phpinfo();
+
+    ?>
+
+Test : enter this url to your browser http://yourserverip/info.php 
+ 
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+=> Step 5 : Install phpMyAdmin 
+
+    sudo apt install phpmyadmin 
+
+Question : Do you want to continue? y 
+
+            Configuring phpmyadmin    Note : move cursor top/bottom arrow key, choose spacebar, tab change mode 
+
+            Configure database for phpmyadmin with dbconfig-common? y 
+
+            MySQL application password for phpmyadmin: mydbserver2024 
+
+    sudo systemctl restart apache2 
+
+Test : enter this url to your browser http://yourserverip/phpmyadmin 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+=> Step 6 : Set Password for Root Account ( For Mysql 8.0 and later versions )
+    
+    sudo mysql -u root 
+
+    ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'mydbserver2025'
+
+    GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
+
+    FLUSH PRIVILEGES;
+
+    exit or \q 
+    sudo mysql -u root -p 
+    mydbserver2025
+    exit or \q
+
+    mysql -u root -p -h yourserverip com
+    mysql -u root -p -h 139.59.230.166 ( check permission to remote from mysql editor, if can't access, it have no permission to remote )
+
+     Note::should not give remote permission for mysql root user 
+         :: -h mean host 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+=> Step 7 : Configure Database Remote Access (Optional) 
+
+    sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf 
+
+    change bind-address to 0.0.0.0 (default is local ip 127.0.0.1)
+
+    bind-address = 127.0.0.1  // find this line 
+    bind-address = 0.0.0.0    // and change it to 
+
+    sudo systemctl restart mysql 
+
+    sudo mysql -u root -p 
+    mydbserver2025 
+
+    CREATE USER 'user1'@'%' IDENTIFIED BY 'userdbserver2025'; 
+
+    Note:: % mean any host , to be able to access from any host , any data grid , any computer 
+
+    GRANT ALL PRIVILEGES ON *.* TO 'user1'@'%' WITH GRANT OPTION; 
+
+    FLUSH PRIVILEGES; 
+
+    exit 
+
+    mysql -u user1 -p 
+    userdbserver2025
+
+    mysql -u root -p -h yourserverip 
+    mysql -u root -p -h 152.42.213.20 
+
+    mysql -u user1 -p -h yourserverip
+    mysql -u user1 -p -h 152.42.213.20
+    
+    linux = ping 152.42.213.20
+            ifconfig ( check local ip )
+            traceroute 152.42.213.20       // need to install sudo apt install traceroute
+
+            Note:: traceroute check how many router are passed through to get 152.42.213.20  in linux
+
+            whois 152.42.213.20 //check where this ip or domain come from and things about this ip
+
+    windows = ping 152.42.213.20 or ping 152.42.213.20 -t 
+            ipconfig ( check local ip )
+            tracert 152.42.213.20  //tracert check how many router are passed through to get 152.42.213.20 in window 
+
+            nslookup 152.42.213.20 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+       
+=> Step 8 : Manage Firewall 
+
+    ufw status 
+        sudo ufw enable
+
+    ufw status 
+        sudo ufw allow ssh 
+        sudo ufw allow 3306    for mysql port 
+
+    sudo ufw app list  
+
+        sudo ufw allow 'Apache'         to allow HTTP traffic on port :80 
+        sudo ufw allow 'Apache Secure'  to allow HTTPS traffic on port :443
+        sudo ufw allow 'Apache Full'    to allow both HTTP and HTTPS traffic 
+    
+    sudo ufw status 
+    sudo ufw reload 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+=> Step 9 : Connect DNS Server (Domain Name Server)
+
+   Godaddy ( domain ready = dltstudent.com )8/feb/2025 = $ 12.5 (1year)
+
+   => Check DNS 
+        https://mxtoolbox.com/ 
+        https://dnschecker.org/ 
+
+        by cmd 
+            ping dltstudent.com 
+
+    => DNS Setting 
+
+        (i) Digital Config 
+
+        Server Info 
+            ubuntu-s-1vcpu--2gb-sgp1-01 
+            152.42.213.20 
+
+        go to digital ocean 
+            choose server > click "Add a domain" 
+            Add a domain = dltstudent.com
+            click "Add Domain" 
+        
+        (ii) Godaddy Config 
+            click "Profile" > My Products > choose Domain > DNS > Nameservers > Change NameServers 
+            ns1.digitalocean.com
+            ns2.digitalocean.com
+            ns3.digitalocean.com
+
+            click "Save" > "Continue" 
+
+            by cmd 
+                ping dltstudent.com  (152.42.213.20)
+
+            
+
+            = Method 1(point to IP address ) 
+
+            (ii) Godaddy Config
+
+                 click "Profile" > My Products > choose Domain > DNS > DNS Records > Add New Record 
+
+                Type = A 
+                Name = @ 
+                Value = 152.42.213.20
+                TTL = Custom Seconds = 600 
+
+                click "Save"  
+
+                then delete "A @ Parked 600" 
+
+                (or) 
+
+                edit "A @ Parked 600 Park: to edit "A @ 152.42.213.20 600 Park" 
+
+             - - - - - - - - - - - - - - - - - - - - - -
+
+            (ii)= Method 2(point to IP address ) 
+                 click "Profile" > My Products > choose Domain > DNS > Nameservers > Change NameServers 
+
+                Type = A 
+                Name = @ 
+                Value = 152.42.213.20
+                TTL = Custom Seconds = 600 
+
+                click "Save"  
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+=> Step 10 : SSL Certificate (Domain Name Config)
+
+    ssltrust ( PositiveSSL - 1 Year (23/03/2025 - 22/03/2026) $9.83 USD )
+    https://www.ssltrust.com.au/ 
+
+
+    click Online Tools > SR Generator (Certificate Signing Request) 
+    https://www.ssltrust.com.au/ssl-tools/generate-csr 
+
+
+    CSR/Key Type = SSL/TLS Certificate 
+    Encryption Algorithm = RSA 
+    Key Length = 2048 
+    Signature = SHA256 
+    Domain Name ( Certificate Common Name ) = dltstudent.com 
+    Organisation Name = DLT 
+
+    click "Show Address Fields" 
+
+
+    City or Suburb = Mandalay 
+    State or Province = Mandalay 
+    Country = Myanmar 
+
+    click "Generate CSR and Private Key" 
+
+    download "Private Key and CSR Key" or copy keys 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    OR 
+
+= Method 2 (CSR Generate from digital ocean server) 
+
+    login to your digital ocean server 
+
+    sudo mkdir /etc/encryption 
+
+    sudo openssl req -new -newkey rsa:2048 -nodes -keyout /etc/encryption/server.key -out /etc/encryption/server 
+
+    Country Name (2 letter code) [AU]: MM 
+    State or Province Name (full name) [Some-State]: Mandalay 
+    Locality Name (eg, city) []: Mandalay 
+    Organization Name (eg, company) [Internet Widgits Pty Ltd]: Data Land Technology Co., Ltd. 
+    Organizational Unit Name (eg, section) []: DLT 
+    Common Name (e.g. server FQDN or YOUR name) []: datalandserver.com 
+    Email Address []: datalandtechnology@gmail.com 
+    A challenge password []: press ENTER 
+    An optional company name []: press ENTER 
+
+    ls /etc/encryption 
+    cat /etc/encryption/server.scr 
+
+    === Explain what is FQDN (Fully Qualified Domain Name) ? 
+    Domain Name 
+        (i) Top-level Domain (TLD) 
+                .com, .org, .net, .io, .ai, etc... 
+        (ii) Second-Level Domain (SLD) 
+                .mm, .th, .sg, .us, .uk, .in, .slk 
+        
+        eg. 
+            blog.google.com 
+                .com = TLD 
+                google = SLD 
+                blog = third-level domain (subdomain) 
+        
+        FQDN = hostname + domain + top-level domain (TLD)
+                example = mail.google.com 
+                    mail = hostname (mail server)
+                    google = domain name (organization / network name)
+                    com = top-level domain (TLD)
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+=> Config after bought SSL Certificate 
+
+Dashboard > Service > My Services > Manage > Manage Product > click "Start Certificate Configuration" 
+
+step 1 , Certificate Configuration 
+
+    copy "CSR.txt key" from your local downloaded file.
+    paste to "Certificate Configuration" 
+    click "Verify CSR" 
+    click and choose "Server Type" = Apache 
+    click "Next Step" 
+
+step 2 , Contace Information 
+
+    Available Contacts = Enter New Contact 
+    Title = Mr. 
+    First Name = Data Land 
+    Last Name = Technology 
+    Email Address = datalandtechnology@gmail.com 
+
+    Available Contacts = Use Admin Contact 
+    click "Next Step" 
+
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+step 3 , Domain Control Validation 
+
+    Validation Method = CNAME 
+
+    =step 1 , go and Config to Godaddy 
+        click "Profile" > My Products > choose Domain > DNS > DNS Records > Add New Record 
+
+        Type = CNAME 
+        Name = 
+        Value = 
+        TTL = Custom Seconds = 600 
+
+        click "Save" 
+    
+    =step 2 , back to ssltrust 
+
+        click "Check DNS Record" (optional)
+        click "Submit Configuration" 
+        click "Click here to access the Validation"
+    
+    
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+=> Step 11: SSL Certificate (Server Config)
+
+step 1 setup 
+
+ssltrust > Dashboard > Services > Manage > Collect/Download Certificate
+Go to the first column and click copy to clipboard 
+sudo nano /etc/encryption/certificate.crt 
+
+copy to clipboard on the Intermediate certificate. 
+sudo nano /etc/encryption/intermediate.crt 
+
+=>Optional (if you generated CSR key from ssltrust website csrkey generator) 
+copy keys from your download
+
+step 2 Apache virtual config 
+
+step 3 Redirect HTTP to HTTPS 
+
+sudo nano /etc/apache2/sites-available/000-default.conf 
+
+    <VirtualHost *:80>
+        ServerAdmin datalandtechnology.com 
+        DocumentRoot /var/www/dltstudent/public 
+        Server dltstudent.com 
+        ServerAlias www.dltstudent.com 
+        Redirect "/" "https://dltstudent.com" 
+    </VirtualHost>
+
+step 4 File Permission (Optional if needed) 
+sudo chmod 777 /etc/encryption/certificate.crt 
+sudo chmod 777 /etc/encryption/server.key 
+sudo chmod 777 /etc/encryption/intermediate.crt 
+
+
+step 5 Firewall Setting 
+sudo ufw app list 
+sudo ufw allow in "Apache Full" 
+
+step 6 ssl module config 
+    sudo a2enmod ssl 
+    sudo a2enmod headers 
+    sudo a2ensite default-ssl 
+    sudo a2enconf ssl-params 
+
+    sudo apache2ctl configtest // check if syntax is ok
+
+    Note : Optional(if you see this warning msg  : AH00558: apache2: Could not )
+
+    sudo systemctl restart apache2 
+
+    sudo systemctl status apache2 
+
+step 7 check ssl is working or not 
+https://www.ssltrust.com.au/ssl-tools/ssl-checker 
+https://www.ssllabs.com/ssltest/ 
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+=> Step 11 : Other 
+
+    => git 
+     sudo apt-get install git 
+     git -v                git --version 2.43.0
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+=> composer 
+
+    https://getcomposer.org/download/ 
+
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    php -r "if (hash_file('sha384', 'composer-setup.php') === 'dac665fdc30fdd8ec78b38b9800061b4150413ff2e3b6f88543c636f7cd84f6db9189d43a81e5503cda447da73c7e5b6') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+    php composer-setup.php
+    php -r "unlink('composer-setup.php');"
+
+
+    sudo mv composer.phar /usr/local/bin/composer
+
+    composer 
+
+    - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+=> node js 
+
+    https://nodejs.org/en/download/package-manager 
+    sudo apt install curl 
+
+    =>nvm 
+        https://github.com/nvm-sh/nvm 
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+
+        export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+        nvm -v 
+
+        =>optional (if nvm: command not found)
+        source ~/.bashrc 
+
+        nvm -v nvm --version       0.39.7 
+    
+    =>node Install  
+        nvm ls-remote 
+        nvm install v22.15.0 
+
+        node --version node -v  
+        npm -version   npm -v 
+                       npx -v 
+        
+    => Set node version (Optional) 
+    nvm ls or nvm list 
+
+    => if you want you can install other node version as well 
+        vm ls-remote 
+        nvm install v(any version) 
+
+        =>How to switch version 
+            node --version 
+            nvm use v(any version)
+        
+        =>Set default version 
+            nvm alias default v(any version)
+    
+    => Set node version (Optional) 
+        nvm ls      or     nvm list 
+
+        eg (up use) 
+            nvm install v22.3.0 
+            nvm use v22.3.0 
+            nvm alias default v22.3.0
+
+        eg (down use) 
+            nvm install v20.12.2
+            nvm use v20.12.2 
+            nvm alias default v20.12.2 
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+    npm 
+    nvm 
+    node 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+=> Uninstall Apache 
+
+    sudo systemctl status apache2 
+    sudo systemctl stop apache2 
+
+    sudo apt-get purge apache2 
+    sudo apt-get autoremove 
+
+    =Remove any remaining configuration files and directories 
+    sudo rm -rf /etc/apache2 
+    sudo rm -rf /var/www/html 
+
+    sudo systemctl status apache2 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+=> Uninstall Mysql 
+    sudo systemctl status mysql 
+    sudo systemctl stop mysql 
+
+    sudo apt-get purge mysql 
+    sudo apt-get autoremoce 
+    sudo apt-get autoclean 
+    
+
+    =Remove any remaining configuration files and directories 
+    sudo rm -rf /etc/mysql 
+    sudo rm -rf /var/lib/mysql 
+    sudo rm -rf /var/log/mysql 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+=> Uninstall PHP 
+
+sudo apt remove 'php*' 
+sudo apt purge 'php*' 
+
+sudo apt-get autoremove 
+sudo apt-get autoclean 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+=> Uninstall Nodejs
+
+sudo apt remove nodejs 
+sudo apt remove npm 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+=>Install Typescript 
+
+https://www.typescriptlang.org/ 
+npm install -g typescript 
+
+tsc -v or tsc --version 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+=> Step 13 : Git Config 
+
+    step 1: user info setup 
+    git config --global user.name "datalandtechnology"
+    git config --global user.email "datalandtechnology@gmail.com"
+    
+
+    step 2: Setup SSH Key 
+    ssh-keygen 
+    cat ~/.ssh/id_rsa.pub 
+
+    step3: Github setup 
+    Account > Setting > SSH and GPG keys > New SSH key 
+
+    step 4: check and user info setup 
+    ssh -T git@github.com 
+
+
+
+=> Step 13: Laravel Existing Project From Github 
+
+    cd /var/www 
+    git clone "........put here your laravel project repo url" 
+    cd dltstudent 
+    composer install 
+
+    .....config..... 
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+=> Step 15 : Laravel Existing Project From Github 
+
+    =>step 1 : login to your digital ocean server 
+        cd /var/www 
+
+        git clone "...put here your laravel project repository url..."
+        cd dltstudent 
+        composer install 
+    
+    =>Set Permission 
+        Note: Once Larave is copied to their server we need to make sure that all of the permission are set correctly 
+        
+        sudo chown -R www-data:www-data . 
+        sudo chmod -R 775 storage 
+        sudo chmod -R 775 bootstrap/cache 
+
+    =>Step 3 : Set Up .env file 
+        you must be in project folder 
+        ls -la 
+        cp .env.example .env 
+        ls -la 
+        nano .env 
+
+        APP_ENV = production 
+        APP_DEBUG = false 
+        APP_KEY = (ignore in the moment) 
+
+        DB_CONNECTION=mysql 
+        DB_HOST=127.0.0.1 (or) localhost 
+        DB_PORT=3306 
+        DB_DATABASE=dltstudentdb
+        DB_USERNAME=user1 
+        DB_PASSWORD=userdbserver2025 
+
+    =>Step 4 : Generate App Key for .env > APP_KEY 
+        php artisan key:generate 
+        nano .env 
+
+    =>Step 5 : Config for Webserver 
+        nano config/app.php 
+        'url' address 'http:/' to 'http://domain name or server ipaddress'
+        'timezone' 'UTC' to 'Asia/Yangon' (https://www.php.net/manual/en/timezones.asia.php)
+
+    =>Fresh Project 
+        php artisan config:cache 
+        php artisan config:clear 
+        php artisan optimize:clear  
+
+        php artisan migrate 
+        php artisan serve 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ssh root@152.42.213.20 
+helloKoKo2025BBC@#$SERVER 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+=> Other Additional Application 
+
+    => Install Zip/Unzip 
+        sudo apt-get install zip unzip 
+    
+    => Install RAR/Unrar 
+        sudo apt-get install unrar 
+            unrar x filename.rar 
+            
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
